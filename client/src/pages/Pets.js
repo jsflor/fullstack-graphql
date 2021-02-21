@@ -48,11 +48,21 @@ export default function Pets () {
   const onSubmit = input => {
     setModal(false);
     createPet({
-      variables: {newPet: input}
+      variables: {newPet: input},
+      optimisticResponse: {
+        __typename: 'Mutation',
+        addPet: {
+          id: Math.floor(Math.random() * 1000) + '',
+          name: input.name,
+          type: input.type,
+          img: 'https://via.placeholder.com/300',
+          __typename: 'Pet'
+        }
+      }
     });
   }
 
-  if (loading || newPet.loading) return <Loader/>;
+  if (loading) return <Loader/>;
   if (error || newPet.error) return <p>Error!</p>;
   
   if (modal) {
